@@ -1,0 +1,125 @@
+/* Homepage container */
+.homepage {
+  text-align: center;
+  background-color: #000; /* Dark background */
+  color: #fff; /* White text for contrast */
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* Hero section container */
+.hero {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Logo and tagline styling */
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 2.5em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  font-size: 1.2em;
+  font-style: italic;
+  color: #ddd;
+  margin-bottom: 5px;
+}
+
+.since {
+  font-size: 1em;
+  color: #ccc;
+}
+
+/* Image container */
+.image-container {
+  position: relative;
+  margin: 20px auto;
+}
+
+.pizza-image {
+  width: 100%;
+  max-width: 500px; /* Limit image size */
+  height: auto;
+  border-radius: 10px; /* Rounded edges */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+/* Buttons section */
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  justify-content: center; /* Center buttons */
+}
+
+.get-started-btn, 
+.login-btn { /* Shared styles for both buttons */
+  background-color: #d32f2f; /* Red button color */
+  color: #fff;
+  font-size: 1em;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.get-started-btn:hover, 
+.login-btn:hover { /* Shared hover effect for both buttons */
+  background-color: #b71c1c; /* Darker red hover effect */
+}
+
+/* Responsive Design */
+
+/* Tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2em; /* Adjust title size for tablets */
+  }
+
+  .tagline, 
+  .since {
+    font-size: 1em; /* Reduce tagline font size */
+  }
+
+  .pizza-image {
+    max-width: 400px; /* Adjust image size for tablets */
+  }
+
+  .get-started-btn, 
+  .login-btn {
+    font-size: 0.9em; /* Adjust button font size */
+    padding: 8px 16px;
+  }
+}
+
+/* Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.8em; /* Compact title size for mobile */
+  }
+
+  .tagline, 
+  .since {
+    font-size: 0.9em; 
+  }
+
+  .pizza-image {
+    max-width: 300px; 
+  }
+
+  .get-started-btn, 
+  .login-btn {
+    font-size: 0.8em; 
+    padding: 6px 12px;
+  }
+}

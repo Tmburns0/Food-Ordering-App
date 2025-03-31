@@ -1,0 +1,118 @@
+.details-page {
+  color: black; /* Black text */
+  background-color: white; /* White background */
+  padding: 20px; /* Keeps consistent spacing */
+  font-family: Arial, sans-serif;
+  max-width: 1200px; /* Center page for larger screens */
+  margin: 0 auto;
+}
+
+.greeting {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px; /* Ensure heading is prominent */
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 400px; /* Increased search bar width */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px; /* Readable font size */
+}
+
+.pizza-category {
+  margin-bottom: 30px; /* Spacing between categories */
+}
+
+.pizza-category h2 {
+  font-size: 22px; /* Smaller heading size for sections */
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.pizza-list {
+  display: grid; /* Make the pizza list responsive */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid layout */
+  gap: 20px;
+  justify-content: center;
+}
+
+.pizza-item img {
+  width: 100%; /* Fills the parent container */
+  height: auto; /* Maintain aspect ratio */
+  max-width: 150px; /* Consistent image size */
+  border-radius: 5px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.pizza-item {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.pizza-item:hover {
+  transform: none; 
+}
+
+.add-to-cart-btn {
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pizza-list {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+  }
+
+  .search-input {
+    max-width: 300px;  
+    
+  }
+
+  .add-to-cart-btn {
+    font-size: 14px;
+    padding: 8px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .details-page {
+    padding: 10px;
+  }
+
+  .greeting {
+    font-size: 20px; 
+  }
+
+  .pizza-item img {
+    max-width: 100px; 
+  }
+
+  .add-to-cart-btn {
+    font-size: 12px; 
+    padding: 6px;
+  }
+}
