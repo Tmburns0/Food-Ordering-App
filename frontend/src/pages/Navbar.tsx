@@ -1,21 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react"; 
-import "../styles/navbar.css"; 
+import { useAuth0 } from "@auth0/auth0-react";
+import "../styles/navbar.css";
 
 const Navbar: React.FC = () => {
-  const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0(); 
-  const [showDropdown, setShowDropdown] = useState(false); 
-  const [menuOpen, setMenuOpen] = useState(false); // State for mobile menu
+  const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleDropdown = () => setShowDropdown((prev) => !prev); // Toggles dropdown visibility
-  const toggleMenu = () => setMenuOpen((prev) => !prev); // Toggles mobile menu visibility
+  const toggleDropdown = () => setShowDropdown((prev) => !prev);
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <h1 className="navbar-logo">MyApp</h1>
-        {/* Hamburger Menu Button */}
         <button className="navbar-hamburger" onClick={toggleMenu}>
           ☰
         </button>
@@ -30,7 +28,6 @@ const Navbar: React.FC = () => {
         <li className="navbar-item">
           <Link to="/cart" className="navbar-link">Your Cart</Link>
         </li>
-        {/* User Profile - Only show when authenticated */}
         {isAuthenticated && user && (
           <>
             <li className="navbar-item">
@@ -49,7 +46,9 @@ const Navbar: React.FC = () => {
                     <button
                       className="navbar-link navbar-logout-btn"
                       onClick={() =>
-                        logout({ returnTo: window.location.origin })
+                        logout({
+                          logoutParams: { returnTo: window.location.origin }, 
+                        })
                       }
                     >
                       Logout
@@ -60,7 +59,6 @@ const Navbar: React.FC = () => {
             </li>
           </>
         )}
-        {/* Welcome message and Login button when not authenticated */}
         {!isAuthenticated && (
           <>
             <li className="navbar-item">
@@ -84,5 +82,3 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
-
-

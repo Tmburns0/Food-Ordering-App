@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"; // Removed BrowserRouter as Router
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "./queryClient";
 import Navbar from "./pages/Navbar";
 import HomePage from "./pages/HomePage";
-import DetailsPage from "./pages/DetailsPage";
+import DetailsPage from "./pages/Detailspage";
 import Cart from "./pages/Cart";
 import OrdersHistory from "./pages/OrdersHistory";
 import UserProfile from "./pages/UserProfile";
@@ -40,7 +40,6 @@ const App: React.FC = () => {
   return (
     <Auth0ProviderWithNavigate>
       <QueryClientProvider client={queryClient}>
-        <Router>
           <Navbar />
           <div style={{ marginTop: "60px", padding: "20px" }}>
             <Routes>
@@ -61,7 +60,6 @@ const App: React.FC = () => {
               <Route path="/auth-callback" element={<AuthCallbackPage />} /> {/* Added route */}
             </Routes>
           </div>
-        </Router>
       </QueryClientProvider>
     </Auth0ProviderWithNavigate>
   );

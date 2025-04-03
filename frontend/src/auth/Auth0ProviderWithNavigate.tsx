@@ -7,28 +7,28 @@ type Props = {
 };
 
 type AppState = {
-  returnTo?: string; 
+  returnTo?: string;
 };
 
 const Auth0ProviderWithNavigate = ({ children }: Props) => {
   const navigate = useNavigate();
 
-  // Load environment variables for Auth0 configuration
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
+  const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
- 
-  if (!domain || !clientId || !redirectUri) {
-    throw new Error("Missing Auth0 environment variables. Please check your .env file.");
+  if (!domain || !clientId || !redirectUri || !audience) {
+    throw new Error(
+      "Auth0 environment variables are missing"
+    );
   }
-
 
   const onRedirectCallback = (appState?: AppState) => {
     if (appState?.returnTo) {
       navigate(appState.returnTo); 
     } else {
-      navigate("/"); 
+      navigate("/auth-callback"); 
     }
   };
 
@@ -37,9 +37,10 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
       domain={domain}
       clientId={clientId}
       authorizationParams={{
-        redirect_uri: redirectUri,
+        redirect_uri: redirectUri, 
+        audience,
       }}
-      onRedirectCallback={onRedirectCallback}
+      onRedirectCallback={onRedirectCallback} 
     >
       {children}
     </Auth0Provider>
@@ -47,3 +48,4 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
 };
 
 export default Auth0ProviderWithNavigate;
+

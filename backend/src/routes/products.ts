@@ -1,9 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
-import Product from "../models/products";  // Import the Mongoose model
+import Product from "../models/products";  
 
 const router = Router();
 
-// Endpoint to fetch all products
+
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const products = await Product.find();
@@ -14,7 +14,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     }
   });
   
-  // Endpoint to fetch a single product by ID
+
   router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
       const productId = req.params.id;
