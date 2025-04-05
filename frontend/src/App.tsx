@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom"; // Removed BrowserRouter as Router
+import { Routes, Route } from "react-router-dom"; 
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "./queryClient";
 import Navbar from "./pages/Navbar";
 import HomePage from "./pages/HomePage";
 import DetailsPage from "./pages/Detailspage";
 import Cart from "./pages/Cart";
+import PaymentPage from "./pages/PaymentPage";
 import OrdersHistory from "./pages/OrdersHistory";
 import UserProfile from "./pages/UserProfile";
-import AuthCallbackPage from "./pages/AuthCallbackPage"; // Added import for AuthCallbackPage
+import AuthCallbackPage from "./pages/AuthCallbackPage"; 
 import Auth0ProviderWithNavigate from "./auth/Auth0ProviderWithNavigate";
+import SuccessPage from "./pages/Success";
 
 const App: React.FC = () => {
-  // Manage cart items with local state
+ 
   const [cartItems, setCartItems] = useState<
     { name: string; price: number; quantity: number; image: string }[]
   >([]);
@@ -55,9 +57,11 @@ const App: React.FC = () => {
                   />
                 }
               />
+              <Route path="/payment" element={<PaymentPage />} /> {/* Added PaymentPage route */}
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/orders" element={<OrdersHistory />} />
               <Route path="/auth-callback" element={<AuthCallbackPage />} /> {/* Added route */}
+              <Route path="/success" element={<SuccessPage />} />
             </Routes>
           </div>
       </QueryClientProvider>

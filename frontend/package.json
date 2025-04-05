@@ -12,6 +12,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
     "@radix-ui/react-slot": "^1.1.2",
+    "@stripe/stripe-js": "^7.0.0",
     "@tailwindcss/postcss": "^4.0.15",
     "@tailwindcss/vite": "^4.0.15",
     "axios": "^1.8.4",

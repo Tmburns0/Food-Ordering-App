@@ -6,6 +6,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import userRouter from "./routes/MyUserRoutes";
+import checkoutrouter from "./routes/create-checkout-session"
 
 const app = express();
 
@@ -33,9 +34,17 @@ connectToMongoDB();
 app.get("/test", (req: Request, res: Response) => {
   res.json({ message: "Server is running smoothly!" });
 });
+app.get("/success", (req, res) => {
+  res.send("<h1>Success</h1>");
+});
+
+app.get("/cancel", (req, res) => {
+  res.send("<h1>Cancelled</h1>");
+});
 
 console.log("Registering /api/my-user route...");
 app.use("/api/my-user", userRouter);
+app.use(checkoutrouter)
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({ error: "Endpoint not found!" });

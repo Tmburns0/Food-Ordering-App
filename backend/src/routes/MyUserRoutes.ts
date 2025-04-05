@@ -4,6 +4,8 @@ import { jwtCheck } from "../middleware/auth";
 
 const userRouter = express.Router();
 
+
 userRouter.post("/", jwtCheck, MyUserController.createCurrentUser);
+userRouter.put("/", MyUserController.updateCurrentUser);
 
 export default userRouter;

@@ -59,22 +59,23 @@
   color: #555;
 }
 
-.place-order-btn {
+.make-payment-btn {
   width: 100%;
   padding: 15px;
   font-size: 16px;
-  color: white;
-  background-color: #007bff;
+  color: white; /* White text */
+  background-color: #dc3545; /* Red background */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
 }
 
-.place-order-btn:hover {
-  background-color: #0056b3;
+.make-payment-btn:hover {
+  background-color: #bd2130; /* Darker shade of red for hover effect */
   transition: background-color 0.3s ease;
 }
+
 
 .remove-order-btn {
   margin-left: 10px;
@@ -91,6 +92,32 @@
   background-color: #bd2130;
   transition: background-color 0.3s ease;
 }
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between buttons and quantity */
+  margin-top: 10px;
+}
+
+.quantity-btn {
+  background-color: #dc3545; /* Red color for quantity buttons */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.quantity-btn:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+.quantity-btn:active {
+  transform: scale(0.95); /* Slight click effect */
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

@@ -1,40 +1,100 @@
-import React, { useState } from "react";
-import "../styles/cart.css";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js"; 
+import "../styles/cart.css"; 
+
+
+// Stripe instance with public API key
+const stripePromise = loadStripe("pk_test_51RA1kkGdNWpZi7cOEerk5alN9gos7xHJ6Ch4OZTq4QVxF4ISOy4t2Q58z90pG8pjiPEFitPalc9KC54mDAliDiyF00KnvvYQkS");
 
 const Cart: React.FC<{ 
   cartItems: { name: string; price: number; quantity: number; image: string }[]; 
-  clearCart: () => void; 
   setCartItems: React.Dispatch<React.SetStateAction<{ name: string; price: number; quantity: number; image: string }[]>>
-}> = ({ cartItems, clearCart, setCartItems }) => {
-  const [orderPlaced, setOrderPlaced] = useState(false); // State for tracking orders
-  const deliveryFee = 2.90; // Fixed delivery fee for simplicity
+}> = ({ cartItems, setCartItems }) => {
+  const navigate = useNavigate();
+  const deliveryFee = 2.9;
 
-  const getTotalPrice = () =>
-    cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+  useEffect(() => {
+    const savedCartItems = localStorage.getItem("cartItems");
+    if (savedCartItems) {
+      setCartItems(JSON.parse(savedCartItems));
+    }
+  }, [setCartItems]);
 
-  const handlePlaceOrder = () => {
-    console.log("Order placed:", cartItems); // Log the order
-    setOrderPlaced(true);
-    clearCart(); // Clear the cart after placing the order
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const calculateTotalPrice = () =>
+    cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  const subtotal = parseFloat(calculateTotalPrice().toFixed(2));
+  const total = parseFloat((subtotal + deliveryFee).toFixed(2));
+
+  const handleIncreaseQuantity = (itemName: string) => {
+    const updatedCart = cartItems.map((item) => 
+      item.name === itemName ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setCartItems(updatedCart);
+  };
+
+  const handleDecreaseQuantity = (itemName: string) => {
+    const updatedCart = cartItems.map((item) =>
+      item.name === itemName && item.quantity > 1 
+        ? { ...item, quantity: item.quantity - 1 } 
+        : item
+    );
+    setCartItems(updatedCart);
   };
 
   const handleRemoveItem = (itemName: string) => {
-    setCartItems((prevCart) => prevCart.filter((item) => item.name !== itemName));
+    const updatedCart = cartItems.filter((item) => item.name !== itemName);
+    setCartItems(updatedCart);
   };
 
-  const subtotal = parseFloat(getTotalPrice());
-  const total = (subtotal + deliveryFee).toFixed(2);
+  const handleMakePayment = async () => {
+    if (cartItems.length === 0) {
+      alert("Your cart is empty! Please add items before proceeding to checkout.");
+      return;
+    }
+
+    const stripe = await stripePromise;
+
+    try {
+      // backend to create checkout session
+      const response = await fetch("http://localhost:5000/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: cartItems,
+          total,
+        }),
+      });
+
+      const session = await response.json();
+      console.log (session)
+      
+      const { error } = await stripe!.redirectToCheckout({ sessionId: session.id });
+
+      if (error) {
+        console.error("Stripe Checkout Error:", error.message);
+        alert("There was an issue redirecting to Stripe Checkout.");
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      alert("Failed to initiate payment. Please try again later.");
+    }
+  };
 
   return (
     <div className="cart-container">
       <h1>Your Cart</h1>
-      {orderPlaced ? (
-        <p className="order-feedback">Your order has been placed successfully!</p>
-      ) : cartItems.length === 0 ? (
+      {cartItems.length === 0 ? (
         <p className="empty-cart">Your cart is empty!</p>
       ) : (
         <div>
-          {/* Cart Items */}
           <div className="cart-items">
             {cartItems.map((item) => (
               <div key={item.name} className="cart-item">
@@ -44,9 +104,26 @@ const Cart: React.FC<{
                   <p>
                     ${item.price.toFixed(2)} x {item.quantity} = ${(item.price * item.quantity).toFixed(2)}
                   </p>
-                  <button 
-                    onClick={() => handleRemoveItem(item.name)} 
-                    className="remove-order-btn" 
+                  <div className="quantity-controls">
+                    <button
+                      onClick={() => handleDecreaseQuantity(item.name)}
+                      className="quantity-btn"
+                      aria-label={`Decrease quantity of ${item.name}`}
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button
+                      onClick={() => handleIncreaseQuantity(item.name)}
+                      className="quantity-btn"
+                      aria-label={`Increase quantity of ${item.name}`}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => handleRemoveItem(item.name)}
+                    className="remove-order-btn"
                     aria-label={`Remove ${item.name} from cart`}
                   >
                     Remove
@@ -56,24 +133,18 @@ const Cart: React.FC<{
             ))}
           </div>
 
-          {/* Cart Summary */}
           <div className="cart-summary">
-            <p><strong>Delivery Address:</strong> White Street Sand Houses 4321</p>
-            <p><strong>Delivery Time:</strong> 10-20 minutes (ASAP)</p>
-            <p><strong>Payment Method:</strong> Credit Card</p>
-            <hr />
             <p><strong>Subtotal:</strong> ${subtotal.toFixed(2)}</p>
             <p><strong>Delivery Fee:</strong> ${deliveryFee.toFixed(2)}</p>
-            <p><strong>Total:</strong> ${total}</p>
+            <p><strong>Total:</strong> ${total.toFixed(2)}</p>
           </div>
 
-          {/* Place Order Button */}
           <button 
-            onClick={handlePlaceOrder} 
-            className="place-order-btn" 
-            aria-label="Place your order"
+            onClick={handleMakePayment} 
+            className="make-payment-btn" 
+            aria-label="Make a payment"
           >
-            Place Order
+            Pay Now
           </button>
         </div>
       )}
@@ -82,4 +153,3 @@ const Cart: React.FC<{
 };
 
 export default Cart;
-
